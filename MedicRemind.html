@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedicRemind</title>
+  <link rel="stylesheet" href="MedicCss.css">
+</head>
+<body>
+
+  <h1 id="medremind">MedicRemind</h1>
+  <form action="/login" method="post">
+
+       <div id="warning" style="color: red; display: none;">Please enter the medicine to have!</div>
+     <div id="input-container">
+     <input type="text" id="to-do-input" placeholder="Add Medicines to Take">
+     <input type="time" id="todo-time">
+     <input type="date" id="todo-start-date" placeholder="Start Date">
+       <input type="date" id="todo-end-date" placeholder="End Date">
+     <button  onclick=" addtodo(event)"  id="add-task">ADD</button>
+     </div>
+     <div id="to-do-item">
+     </div>
+  
+
+  <script src="MedicRemind.js"></script>
+  
+</body>
+</html>

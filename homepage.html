@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sehat+</title>
+  <script src="https://kit.fontawesome.com/181115528b.js" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="homepageCss.css">
+
+
+  <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+
+
+
+</head>
+<body>
+
+                                           <!-- Navbar -->
+  <div class="Topnav">
+    <span id="WElog"><a href="#"id="LogoName"><b>Sehat<span id="budy">+</span></b></a></span>
+
+    <select onchange="ChangeLanguage(this.value)" id="rightsection">
+      <option value="">Select a language</option>
+      <option value="en">English</option>
+      <option value="My">മലയാളം</option>
+      <option value="Hi">हिन्दी</option>
+      <option value="Ma">मराठी</option>
+    </select>
+
+    <a href="#aboutsection" class="sectionOFDIV">About</a>
+    <a href="#Contact" class="sectionOFDIV">Contact</a>
+    <a href="#Contact" class="sectionOFDIV">Help</a>
+    <a href="profile.html" class="sectionOFDIV"><i class="fa-solid fa-user"></i></a>
+  </div>
+
+                                       <!-- Hero Section -->
+  <div id="main-cont">
+    <div id="text-cont1">
+      Your Health is our 
+      <div id="text-cont2">Responsibility</div>
+      <div id="text-cont2">We’re here to help you</div>
+      <div id="text-cont3">Get Started</div>
+    </div>
+    <div id="imgdiv"><img src="docterKK.jpg" class="imgdocrob" alt="Doctor Image"></div>
+  </div>
+
+                                        <!-- Features Section -->
+  <div class="mainDiv">
+    <div class="div1"><a href="MedicRemind.html"><img src="medc.png" class="medc"></a></div>
+    <div class="div2"><a href="PatitentPage.html"><img src="labtest.png" class="medc"></a></div>
+    <div class="div3"><a href="C:\Users\Lenovo\Desktop\SIH(2025)\Drive.html"><img src="report.png" class="medc"></a></div>
+    <div class="div4"><a href="C:\Users\Lenovo\Desktop\SIH(2025)\static\Ai.html"><img src="ai.png" class="medc"></a></div>
+  </div>
+
+                                        <!-- About Section -->
+  <div id="aboutsection">
+    <div id="AboutName">About Us</div>
+    <div id="AboutContent">
+      <div class="AboutItem">At <strong>Sehat+</strong>, our mission is to make healthcare simple, accessible, and reliable for everyone. We are passionate about empowering people to take charge of their well-being with the help of technology.</div>
+      <div class="AboutItem">Our app provides smart medicine reminders, digital health record tracking, doctor-patient connectivity, and personalized wellness tips—all in one place.</div>
+      <div class="AboutItem">We understand that health is personal. That’s why we prioritize security and confidentiality, ensuring your data is safe and protected at all times.</div>
+      <div class="AboutItem">With <strong>Sehat+</strong>, you’re not just downloading an app—you’re gaining a trusted companion on your journey to better health.</div>
+    </div>
+  </div>
+
+                                     <!-- Contact Section -->
+  <div class="Contact">
+    <h2 id="Contact">Contact</h2>
+    <div class="ContactItem">Email: sehatplus@gmail.com</div>
+    <div class="ContactItem">Phone: +91 7020573044</div>
+    <div class="ContactItem">Address: 123 Health St, Wellness City, HC 12345</div>
+  </div>
+
+  <!-- Footer -->
+  <div id="Coopyright">
+    <p>© 2025 HealthBuddy. All rights reserved.</p>
+    <p>
+      <a href="privacy.html">Privacy Policy</a> | 
+      <a href="terms.html">Terms of Service</a>
+    </p>
+  </div>
+
+ <script>
+
+  function ChangeLanguage(lang) {
+    if(lang === 'en') {
+      window.location.href = 'homepage.html';
+    } else
+    if(lang === 'My') {
+      window.location.href = 'homepageMalayalam.html';
+    } else if(lang === 'Hi') {
+      window.location.href = 'homepageHindi.html';
+    } else if(lang === 'Ma') {
+      window.location.href = 'homepageMarathi.html';
+    }
+  }
+
+
+ </script>
+
+
+
+</body>
+</html>
