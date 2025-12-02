@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+
+  <script src="https://kit.fontawesome.com/d3c8ce19e3.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="register.css">
+<script type="module" src="login.js" defer></script>
+</head>
+<body>
+
+<!-- Optional splash (commented out) -->
+<!--
+<div id="splash">
+  <div class="cross">
+    <div class="bar vertical"></div>
+    <div class="bar horizontal"></div>
+  </div>
+</div>
+-->
+
+<div id="mainLogin">Welcome
+  <div>
+    <input class="EmailInput-css" type="email" placeholder="Enter Email or Username" id="username">
+    <input class="PassInput-css" type="password" placeholder="Password" id="password">
+  </div>
+
+  <div id="ineerdiv">
+    <button class="but1" id="loginBtn">Login</button>
+    <button class="but1">Sign Up</button>
+  </div>
+
+  <span class="regestier"> Don't have an Account?
+    <button id="submit" type="submit">Create Account</button>
+  </span>
+  <br>
+
+  <div>
+    <div class="go" id="google">
+      <img class="GoogleImg" src="google.jpg" alt="google sign in">
+    </div>
+  </div>
+</div>
+
+<!-- load register.js first (it exports auth) -->
+<script type="module" src="./register.js"></script>
+
+<!-- then import exported auth & use it here -->
+<script type="module">
+  import { auth, createUserWithEmailAndPassword } from './register.js';
+
+  // safe splash handling (only if those elements exist)
+  const splash = document.getElementById('splash');
+  const authBox = document.getElementById('authBox') || document.getElementById('mainLogin');
+  if (splash && authBox) {
+    setTimeout(() => {
+      splash.style.display = "none";
+      authBox.style.display = "flex";
+    }, 2000);
+  }
+
+  // get submit button safely
+  const submit = document.querySelector('#submit');
+  if (!submit) {
+    console.warn('Create Account button (#submit) not found.');
+  } else {
+    submit.addEventListener('click', async function (event) {
+      event.preventDefault();
+
+      // read values at click time
+      const email = document.querySelector('#username')?.value?.trim();
+      const password = document.querySelector('#password')?.value;
+
+      if (!email || !password) {
+        alert('Enter both email and password.');
+        return;
+      }
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        alert('Creating Account...');
+      window.location.href = "file:///C:/Users/Lenovo/Desktop/FolderChaFolder/SIH(2025)/frontend/HomePage/homepage.html";
+
+      } catch (error) {
+        // use error.message (errorMessage variable didn't exist)
+        alert(error.message || 'Signup failed');
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
