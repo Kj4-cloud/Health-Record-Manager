@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Simple Uploader — with File List</title>
+  <link rel="stylesheet" href="drive.css">
+</head>
+<body>
+  <div class="wrap">
+    <h1>Simple File Uploader</h1>
+    <p class="muted">Upload a file. Metadata is sent as JSON in <code>metadata</code>.</p>
+
+    <form id="form">
+      <label for="title">Title (optional)</label>
+      <input id="title" name="title" type="text" placeholder="My document" />
+
+      <label for="tags">Tags (comma-separated)</label>
+      <input id="tags" name="tags" type="text" placeholder="tag1,tag2" />
+
+      <label for="file">File</label>
+      <input id="file" name="file" type="file" />
+
+      <button type="submit" id="btn">Upload</button>
+    </form>
+
+    <div id="status" class="muted"></div>
+
+    <div id="result" class="result" style="display:none"></div>
+
+    <h2 style="margin-top:26px">Uploaded files</h2>
+    <div id="filesContainer">
+      <div class="no-data">Loading files...</div>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+
+    const API_UPLOAD = 'http://localhost:5000/api/upload';
+    const API_LIST   = 'http://localhost:5000/api/uploads';
+    const API_FILE   = 'http://localhost:5000/api/file';
+
+    const form = document.getElementById('form');
+    const fileInput = document.getElementById('file');
+    const title = document.getElementById('title');
+    const tags = document.getElementById('tags');
+    const status = document.getElementById('status');
+    const result = document.getElementById('result');
+    const btn = document.getElementById('btn');
+    const filesContainer = document.getElementById('filesContainer');
+
+    // Escape HTML
+    function escapeHtml(s){
+      if (!s && s !== 0) return '';
+      return String(s).replace(/[&<>"']/g, m => (
+        {'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[m]
+      ));
+    }
+
+    // Format file size
+    function formatBytes(bytes){
+      if (!bytes) return '0 B';
+      const k = 1024;
+      const sizes = ['B','KB','MB','GB','TB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // Render file list with delete button
+    function renderFiles(files){
+      if (!files || files.length === 0){
+        filesContainer.innerHTML = '<div class="no-data">No uploaded files yet.</div>';
+        return;
+      }
+
+      let html = `
+      <table>
+        <thead>
+          <tr>
+            <th>File name</th>
+            <th class="small">Size</th>
+            <th class="small">Uploaded</th>
+            <th class="center">Download</th>
+            <th class="center">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+      `;
+
+      files.forEach(f => {
+        const id = escapeHtml(f._id);
+        const name = escapeHtml(f.originalName || f.filename || '—');
+        const size = f.size ? formatBytes(f.size) : '—';
+        const when = f.createdAt ? (new Date(f.createdAt)).toLocaleString() : '—';
+        const dl = `${API_FILE}/${id}`;
+
+        html += `
+        <tr>
+          <td>${name}</td>
+          <td class="small">${size}</td>
+          <td class="small">${escapeHtml(when)}</td>
+          <td class="center">
+            <a class="link" href="${dl}" target="_blank">Download</a>
+          </td>
+          <td class="center">
+            <button onclick="deleteFile('${id}')"
+              style="padding:6px 10px;border-radius:4px;border:1px solid #e2e8f0;background:#fff;color:#c00;cursor:pointer">
+              Delete
+            </button>
+          </td>
+        </tr>`;
+      });
+
+      html += "</tbody></table>";
+      filesContainer.innerHTML = html;
+    }
+
+    // Fetch file list from backend
+    async function fetchFiles(){
+      filesContainer.innerHTML = '<div class="no-data">Loading files...</div>';
+      try {
+        const res = await fetch(API_LIST);
+        const json = await res.json();
+
+        if (res.ok && json.success){
+          renderFiles(json.uploads);
+        } else {
+          filesContainer.innerHTML = `<div class="no-data error">Failed to load files.</div>`;
+        }
+      } catch (err){
+        filesContainer.innerHTML = `<div class="no-data error">Network error.</div>`;
+      }
+    }
+
+    // DELETE file function
+    window.deleteFile = async function(id){
+      const ok = confirm("Are you sure you want to delete this file?");
+      if (!ok) return;
+
+      status.textContent = "Deleting...";
+
+      try {
+        const res = await fetch(`${API_LIST}/${id}`, { method: "DELETE" });
+        const json = await res.json();
+
+        if (res.ok && json.success){
+          status.textContent = "File deleted.";
+          fetchFiles();
+        } else {
+          status.innerHTML = `<span class="error">Delete failed.</span>`;
+        }
+
+      } catch (err){
+        status.innerHTML = `<span class="error">${escapeHtml(err.message)}</span>`;
+      }
+    }
+
+    // Upload submit
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      result.style.display = 'none';
+      status.textContent = '';
+
+      const file = fileInput.files[0];
+      if (!file){
+        status.innerHTML = '<span class="error">Please choose a file.</span>';
+        return;
+      }
+
+      btn.disabled = true;
+      status.textContent = 'Uploading...';
+
+      const metadata = {
+        title: title.value.trim() || undefined,
+        tags: tags.value.split(',').map(t => t.trim()).filter(Boolean)
+      };
+
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('metadata', JSON.stringify(metadata));
+
+      try {
+        const res = await fetch(API_UPLOAD, { method:'POST', body:fd });
+        const json = await res.json();
+
+        if (res.ok && json.success){
+          status.textContent = 'Upload successful.';
+          result.style.display = 'block';
+          result.innerHTML = `
+            <div><strong>ID:</strong> ${escapeHtml(json.document._id)}</div>
+            <div><strong>Original name:</strong> ${escapeHtml(json.document.originalName)}</div>
+            <div><a class="link" href="${API_FILE}/${escapeHtml(json.document._id)}" target="_blank">Download</a></div>
+          `;
+          fetchFiles();
+        } else {
+          status.innerHTML = '<span class="error">Upload failed.</span>';
+        }
+
+      } catch (err){
+        status.innerHTML = `<span class="error">Network error: ${escapeHtml(err.message)}</span>`;
+      }
+
+      btn.disabled = false;
+    });
+
+    // Load files on page start
+    fetchFiles();
+
+  })();
+  </script>
+</body>
+</html>

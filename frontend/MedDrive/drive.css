@@ -1,0 +1,39 @@
+    /* minimal CSS */
+    body{font-family: Arial, Helvetica, sans-serif;
+         background:#f6f8fa; 
+         color:#111; margin:0;
+          padding:24px}
+
+
+    .wrap{max-width:860px;margin:28px auto;background:#fff;padding:18px;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,0.06)}
+
+    h1{margin:0 0 12px;font-size:20px}
+
+
+    label{display:block;margin:10px 0 6px;font-size:14px}
+
+    input[type="text"], input[type="file"], textarea{width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;font-size:14px}
+
+    button{margin-top:12px;padding:10px 14px;border:none;background:#007bff;color:#fff;border-radius:5px;cursor:pointer}
+
+    button[disabled]{opacity:0.6;cursor:default}
+
+    .muted{color:#666;font-size:13px;margin-top:8px}
+
+    .result{margin-top:14px;padding:10px;background:#f1f7ff;border:1px solid #d6e9ff;border-radius:4px}
+
+    .error{color:#c00}
+
+    a.link{color:#007bff}
+
+    table{width:100%;border-collapse:collapse;margin-top:12px}
+
+    th, td{padding:8px;border-bottom:1px solid #eee;text-align:left;font-size:14px}
+
+    th{background:#fafafa}
+
+    .small{font-size:12px;color:#666}
+
+    .center{text-align:center}
+    
+    .no-data{padding:18px;color:#666}

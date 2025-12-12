@@ -236,13 +236,13 @@ body{
 }
     
     .div1, .div2, .div3, .div4{
-        width: 4vw;
-        height: 3vh;
-        margin-top: 19vh;
+        width: 14vw;
+        height: 23vh;
+        margin-top: 8vh;
         border-radius: 12px;
     }
     .mainDiv{
-        height: 50vh;
+        height: 40vh;
         width: 100%;
         display: flex;
         justify-content: space-around;
